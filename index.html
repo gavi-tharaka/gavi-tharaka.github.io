@@ -58,13 +58,14 @@ function initializeConversion(data) {
 
   // Function to perform conversion
   function convert(text, style) {
-    let convertedText = text;
-    data.forEach(item => {
-      const regex = new RegExp(item.uni, 'g');
-      convertedText = convertedText.replace(regex, item[style]);
-    });
-    return convertedText;
-  }
+  let convertedText = text;
+  data.forEach(item => {
+    const escapedUni = item.uni.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escapedUni, 'g');
+    convertedText = convertedText.replace(regex, item[style]);
+  });
+  return convertedText;
+}
 
   // Event listener for input text and style change
   inputText.addEventListener('input', updateConversion);
