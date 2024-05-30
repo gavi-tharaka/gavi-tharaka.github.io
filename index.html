@@ -9,6 +9,13 @@
 <body>
   <div class="container">
     <div class="row mt-5">
+      <div class="mb-2">
+          <label for="styleSelect" class="form-label">Select Style</label>
+          <select class="form-select" id="styleSelect">
+            <option value="fm" selected>FM</option>
+            <option value="isi">ISI</option>
+          </select>
+        </div>
       <div class="col-md-6">
         <div class="mb-3">
           <label for="inputText" class="form-label">Enter Text</label>
@@ -19,13 +26,6 @@
         <div class="mb-3">
           <label for="outputText" class="form-label">Converted Text</label>
           <textarea class="form-control" id="outputText" rows="5" readonly></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="styleSelect" class="form-label">Select Style</label>
-          <select class="form-select" id="styleSelect">
-            <option value="fm" selected>FM</option>
-            <option value="isi">ISI</option>
-          </select>
         </div>
       </div>
     </div>
