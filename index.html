@@ -32,42 +32,52 @@
   </div>
 
   <script>
-    const data = {
-      // Replace this with your JSON data
-      "data_list": [
-        {"uni": "ක", "fm": "k", "isi": "ka"},
-        {"uni": "ම", "fm": "m", "isi": "ma"}
-        // Add more conversion rules here if needed
-      ]
-    };
-
-    const inputText = document.getElementById('inputText');
-    const outputText = document.getElementById('outputText');
-    const styleSelect = document.getElementById('styleSelect');
-
-    // Function to perform conversion
-    function convert(text, style) {
-      let convertedText = text;
-      data.data_list.forEach(item => {
-        const regex = new RegExp(item.uni, 'g');
-        convertedText = convertedText.replace(regex, item[style]);
-      });
-      return convertedText;
+    // Fetch JSON data from the file
+fetch('data_list.json')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
+    return response.json(); // Parse JSON from response
+  })
+  .then(data => {
+    // Use the fetched data
+    initializeConversion(data);
+  })
+  .catch(error => {
+    console.error('There was a problem fetching the data:', error);
+  });
 
-    // Event listener for input text and style change
-    inputText.addEventListener('input', updateConversion);
-    styleSelect.addEventListener('change', updateConversion);
+function initializeConversion(data) {
+  const inputText = document.getElementById('inputText');
+  const outputText = document.getElementById('outputText');
+  const styleSelect = document.getElementById('styleSelect');
 
-    function updateConversion() {
-      const input = inputText.value;
-      const style = styleSelect.value;
-      const converted = convert(input, style);
-      outputText.value = converted;
-    }
+  // Function to perform conversion
+  function convert(text, style) {
+    let convertedText = text;
+    data.data_list.forEach(item => {
+      const regex = new RegExp(item.uni, 'g');
+      convertedText = convertedText.replace(regex, item[style]);
+    });
+    return convertedText;
+  }
 
-    // Initial conversion
-    updateConversion();
+  // Event listener for input text and style change
+  inputText.addEventListener('input', updateConversion);
+  styleSelect.addEventListener('change', updateConversion);
+
+  function updateConversion() {
+    const input = inputText.value;
+    const style = styleSelect.value;
+    const converted = convert(input, style);
+    outputText.value = converted;
+  }
+
+  // Initial conversion
+  updateConversion();
+}
+
   </script>
 </body>
 </html>
