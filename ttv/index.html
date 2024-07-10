@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Voice Web App</title>
+</head>
+<body>
+    <div>
+        <h1 style="text-align: center;">Text to Voice Web App</h1>
+        <form id="textToVoiceForm">
+            <div>
+                <label for="textInput">Enter Text (max 200 characters):</label>
+                <textarea id="textInput" rows="5" maxlength="250" required></textarea>
+            </div>
+            <div>
+                <label for="languageSelect">Select Language:</label>
+                <select id="languageSelect" required>
+                    <option value="en">English</option>
+                    <option value="si">සිංහල</option>
+                    <option value="si">தமிழ்</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <!-- Add more languages as needed -->
+                </select>
+            </div>
+            <button type="submit">Convert to Voice</button>
+        </form>
+
+        <div id="outputSection" style="margin-top: 20px; display: none;">
+            <audio id="audioPlayer" controls></audio>
+            <a id="downloadLink" href="#" download="output.mp3">Download Audio</a>
+        </div>
+        <div id="alertSection" style="display: none; color: red;">
+            Character limit exceeded! Please enter 200 characters or fewer.
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var textInput = document.getElementById('textInput');
+            var languageSelect = document.getElementById('languageSelect');
+            var audioPlayer = document.getElementById('audioPlayer');
+            var downloadLink = document.getElementById('downloadLink');
+            var outputSection = document.getElementById('outputSection');
+            var alertSection = document.getElementById('alertSection');
+            var textToVoiceForm = document.getElementById('textToVoiceForm');
+
+            textInput.addEventListener('input', function() {
+                var text = textInput.value;
+                if (text.length > 200) {
+                    alertSection.style.display = 'block';
+                    outputSection.style.display = 'none';
+                } else {
+                    alertSection.style.display = 'none';
+                }
+            });
+
+            textToVoiceForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                var text = textInput.value;
+                if (text.length > 200) {
+                    alertSection.style.display = 'block';
+                    outputSection.style.display = 'none';
+                    return;
+                } else {
+                    alertSection.style.display = 'none';
+                }
+
+                var language = languageSelect.value;
+                var apiUrl = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=' + language + '&client=tw-ob&q=' + encodeURIComponent(text);
+
+                audioPlayer.src = apiUrl;
+                downloadLink.href = apiUrl;
+                outputSection.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
